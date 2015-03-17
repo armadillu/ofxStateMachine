@@ -18,8 +18,8 @@ void ofApp::setup(){
 
 	//set initial state;
 	state.setState(LOADING_ASSETS);
-
 }
+
 
 void ofApp::stateChanged(ofxStateMachine<AppState>::StateChangedEventArgs& change){
 	ofLog() << "State Changed from " << state.getNameForState(change.oldState) << " to "
@@ -32,10 +32,10 @@ void ofApp::stateError(ofxStateMachine<AppState>::ErrorStateEventArgs& error){
 }
 
 
-//lets fake a json load mathod
-bool ofApp::loadJson(){
+
+bool ofApp::loadJson(){ //lets fake a json load method
 	ofLog() << "trying to load json...";
-	bool OK = (ofRandom(1) < 0.1);
+	bool OK = (ofRandom(1) < 0.1); //fail 90% of the time
 	return OK;
 }
 
@@ -55,7 +55,8 @@ void ofApp::update(){
 			if(state.isReadyToProceed()){
 				if( !state.ranOutOfErrorRetries() ){
 
-					bool OK = loadJson();
+					bool OK = loadJson(); // YOUR STATE CODE HERE! <<<<<<<<<<<<<<<<<<<<<<<<<
+
 					if(OK){
 						ofLog() << "json loaded ok!";
 						state.setState(STARTUP_TESTS);

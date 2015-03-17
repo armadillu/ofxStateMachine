@@ -4,9 +4,7 @@
 
 
 #include "ofxStateMachine.h"
-#include "ofxStateMachine.cpp"
-
-//NOTE THE INCLUSION OF .CPP too! Bc of Templates!
+#include "ofxStateMachine.cpp" //NOTE THE INCLUSION OF .CPP!! Bc of the templated code
 //http://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file
 
 
