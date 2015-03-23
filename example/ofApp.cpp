@@ -6,82 +6,37 @@ void ofApp::setup(){
 	ofBackground(22);
 	ofSetFrameRate(60);
 
+	//our content manaer
+	contentManager.setup();
+
+	dsm.setup("fonts/VeraMono-Bold.ttf", LP_SVG_LOGO_PATH, ofColor::black, ofColor::ivory);
+
 	//listen to state machine changes
-	ofAddListener(state.eventStateChanged, this, &ofApp::stateChanged);
-	ofAddListener(state.eventStateError, this, &ofApp::stateError);
+	ofAddListener(dsm.eventStateChanged, this, &ofApp::stateChanged);
+	ofAddListener(dsm.eventStateError, this, &ofApp::stateError);
 
 	//init state names
-	state.SET_NAME_FOR_STATE(LOADING_ASSETS);
-	state.SET_NAME_FOR_STATE(LOADING_JSON);
-	state.SET_NAME_FOR_STATE(STARTUP_TESTS);
-	state.SET_NAME_FOR_STATE(RUNNING);
+	dsm.SET_NAME_AND_COLOR_FOR_STATE(LOADING_CONTENT, ofColor::green);
+	dsm.SET_NAME_AND_COLOR_FOR_STATE(LOADING_CONTENT_FAILED, ofColor::red);
+	dsm.SET_NAME_AND_COLOR_FOR_STATE(RUNNING, ofColor::gray);
 
 	//set initial state;
-	state.setState(LOADING_ASSETS);
+	dsm.setState(LOADING_CONTENT);
 }
 
 
 void ofApp::stateChanged(ofxStateMachine<AppState>::StateChangedEventArgs& change){
-	ofLog() << "State Changed from " << state.getNameForState(change.oldState) << " to "
-	<< state.getNameForState(change.newState);
-}
 
+	ofLog() << "State Changed from " << dsm.getNameForState(change.oldState) << " to "
+	<< dsm.getNameForState(change.newState);
 
-void ofApp::stateError(ofxStateMachine<AppState>::ErrorStateEventArgs& error){
-	ofLog() << "Error '" << error.errorMsg << "' during state '" << state.getNameForState(error.state) << "'";
-}
+	switch(change.newState){
 
-
-
-bool ofApp::loadJson(){ //lets fake a json load method
-	ofLog() << "trying to load json...";
-	bool OK = (ofRandom(1) < 0.1); //fail 90% of the time
-	return OK;
-}
-
-
-void ofApp::update(){
-
-	switch (state.getState()) {
-
-		case LOADING_ASSETS:
-			if (state.getElapsedTime() > 2.0){ //lets pretend we load stuff for 2 seconds
-				state.setState(LOADING_JSON);
-			}
+		case LOADING_CONTENT:
+			contentManager.fetchContent();
 			break;
 
-		case LOADING_JSON:
-
-			if(state.isReadyToProceed()){
-				if( !state.ranOutOfErrorRetries() ){
-
-					bool OK = loadJson(); // YOUR STATE CODE HERE! <<<<<<<<<<<<<<<<<<<<<<<<<
-
-					if(OK){
-						ofLog() << "json loaded ok!";
-						state.setState(STARTUP_TESTS);
-					}else{
-						state.setError("failed to load!", 3.0/*sec*/, 20/*retry max*/); //report an error, retry!
-						ofLog() << "json failed to load! (" << state.getNumTimesRetried() << ")";
-					}
-				}else{
-					ofLog() << "json failed to load too many times! Giving Up!";
-					state.setState(JSON_FAILED);
-				}
-			}
-			break;
-
-		case JSON_FAILED:
-			if (state.getElapsedTime() > 2.0){ //hold the error screen for a while and quit
-				ofLog() << "cant load json, exiting!";
-				ofExit();
-			}
-			break;
-
-		case STARTUP_TESTS:
-			if (state.getElapsedTime() > 2.0){
-				state.setState(RUNNING);
-			}
+		case LOADING_CONTENT_FAILED:
 			break;
 
 		case RUNNING:
@@ -90,7 +45,61 @@ void ofApp::update(){
 }
 
 
+void ofApp::stateError(ofxStateMachine<AppState>::ErrorStateEventArgs& error){
+	ofLog() << "Error '" << error.errorMsg << "' during state '" << dsm.getNameForState(error.state) << "'";
+}
+
+
+void ofApp::update(){
+
+	switch (dsm.getState()) {
+
+		case LOADING_CONTENT:
+
+			contentManager.update();
+			
+			dsm.updateState( contentManager.getPercentDone(), "doing things...");
+
+			if(dsm.isReadyToProceed() && !contentManager.isBusy()){ //slow down the state machine to handle error / retry
+
+				if( dsm.hasError() && dsm.ranOutOfErrorRetries()){ //give up!
+					ofLog() << "json failed to load too many times! Giving Up!";
+					dsm.setState(LOADING_CONTENT_FAILED);
+					break;
+				}else{
+					if(contentManager.isContentReady()){ //see if we are done (optional)
+						ofLog() << "json loaded ok!";
+						dsm.setState(RUNNING);
+						break;
+					}
+				}
+
+				if(contentManager.foundError()){
+					dsm.setError("failed to load!", 3.0/*sec*/, 5/*retry max*/); //report an error, retry!
+					ofLog() << "json failed to load! (" << dsm.getNumTimesRetried() << ")";
+					dsm.setState(LOADING_CONTENT, false); //note "false" << do not clear errors (to keep track of # of retries)
+				}
+
+			}
+			break;
+
+		case LOADING_CONTENT_FAILED:
+			dsm.updateState( dsm.getElapsedTimeInCurrentState() / jsonFailedTime, "doing things...");
+			if (dsm.getElapsedTimeInCurrentState() > jsonFailedTime){ //hold the error screen for a while and quit
+				ofLog() << "cant load json, exiting!";
+				ofExit();
+			}
+			break;
+
+
+		case RUNNING:
+			dsm.updateState( dsm.getElapsedTimeInCurrentState() / jsonFailedTime, "doing things...");
+			break;
+	}
+}
+
+
 void ofApp::draw(){
-	ofDrawBitmapString(state.getStatusMessage(), 20, 20);
+	dsm.draw();
 }
 

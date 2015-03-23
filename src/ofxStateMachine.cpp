@@ -8,6 +8,7 @@
 
 #include "ofxStateMachine.h"
 
+
 template <class T>
 ofxStateMachine<T>::ofxStateMachine(){
 	stateTime = waitTime = 0.0f;
@@ -27,6 +28,7 @@ void ofxStateMachine<T>::setNameForState(T state_, string name){
 	stateNames[state_] = name;
 }
 
+
 template <class T>
 void ofxStateMachine<T>::setState(T newState, bool clearErrors){
 
@@ -42,6 +44,7 @@ void ofxStateMachine<T>::setState(T newState, bool clearErrors){
 	ofNotifyEvent(eventStateChanged, eventArgs, this);
 }
 
+
 template <class T>
 T ofxStateMachine<T>::getState(){
 	return state;
@@ -55,6 +58,16 @@ string ofxStateMachine<T>::getNameForState(T state_){
 		return it->second;
 	}
 	return "state " + ofToString((int)state_) + " (no name given)";
+}
+
+
+template <class T>
+string ofxStateMachine<T>::getNameAndQuickStatusForState(T state_){
+	string r = getNameForState(state_);
+	if(error){
+		r += " ERROR! (" + ofToString(numRetries) + "/" + ofToString(maxRetries) + ")";
+	}
+	return r;
 }
 
 
@@ -112,6 +125,7 @@ string ofxStateMachine<T>::getStatusMessage(){
 	return msg;
 }
 
+
 template <class T>
 void ofxStateMachine<T>::clearErrorStatus(){
 	numRetries = 0;
@@ -121,13 +135,14 @@ void ofxStateMachine<T>::clearErrorStatus(){
 }
 
 template <class T>
-float ofxStateMachine<T>::getElapsedTime(){ return stateTime;}
+float ofxStateMachine<T>::getElapsedTimeInCurrentState(){ return stateTime;}
 
 
 template <class T>
 int ofxStateMachine<T>::getNumTimesRetried(){
 	return numRetries;
 }
+
 
 template <class T>
 int ofxStateMachine<T>::getMaxRetryTimes(){

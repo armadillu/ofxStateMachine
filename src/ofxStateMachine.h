@@ -25,6 +25,7 @@ public:
 
 	void setNameForState(T state_, string name);
 	string getNameForState(T state_);
+	string getNameAndQuickStatusForState(T state_);
 
 
 /// SETTING / GETTING STATE /////////////////////////////////////////////
@@ -33,7 +34,7 @@ public:
 	T getState();
 
 	string getCurrentStateName();
-	float getElapsedTime();
+	float getElapsedTimeInCurrentState();
 
 /// IN-STATE ERROR HANDLING / RETRY N TIMES /////////////////////////////
 
@@ -72,7 +73,7 @@ public:
 	ofEvent<StateChangedEventArgs> eventStateChanged;
 	ofEvent<ErrorStateEventArgs> eventStateError;
 
-private:
+protected:
 
 	void update(ofEventArgs & args);
 

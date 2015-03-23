@@ -1,22 +1,24 @@
 #pragma once
 
 #include "ofMain.h"
+#include "LoadingScreen.h"
+
+#include "ofxDrawableStateMachine.h"
+#include "DummyContentManager.h"
+
+#define LP_SVG_LOGO_PATH "images/LocalProjects_logo.svg"
 
 
-#include "ofxStateMachine.h"
-#include "ofxStateMachine.cpp" //NOTE THE INCLUSION OF .CPP!! Bc of the templated code
-//http://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file
-
+const float loadJsonTime = 6.0;
+const float jsonFailedTime = 6.0;
 
 class ofApp : public ofBaseApp{
 
 public:
 
 	enum AppState{
-		LOADING_ASSETS = 0,
-		LOADING_JSON,
-		JSON_FAILED,
-		STARTUP_TESTS,
+		LOADING_CONTENT = 0,
+		LOADING_CONTENT_FAILED,
 		RUNNING
 	};
 
@@ -34,7 +36,8 @@ public:
 
 	// APP SETUP ////////////////////////////////////////////
 
-	ofxStateMachine<AppState> state;
+	//State Machine
+	ofxDrawableStateMachine<AppState> dsm;
 
-	bool loadJson();
+	DummyContentManager contentManager;
 };
