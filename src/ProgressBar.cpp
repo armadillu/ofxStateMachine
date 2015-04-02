@@ -15,7 +15,7 @@ ProgressBar::ProgressBar(){
 	bgColor = ofColor::green;
 	fgColor = ofColor::white;
 	ofDisableArbTex();
-	indeterminateFbo.allocate(INDETERMINATE_BAR_SIZE, INDETERMINATE_BAR_SIZE);
+	indeterminateFbo.allocate(INDETERMINATE_BAR_SIZE, INDETERMINATE_BAR_SIZE, GL_RGBA, 4);
 	ofEnableArbTex();
 }
 
@@ -32,7 +32,7 @@ void ProgressBar::setProgressIsIndeterminate(bool i){
 		ofPushStyle();
 		indeterminateFbo.begin();
 		ofClear(bgColor);
-		ofSetColor(fgColor);
+		ofSetColor(fgColor, 200);
 		ofBeginShape();
 		ofVertex(0, INDETERMINATE_BAR_SIZE);
 		ofVertex(INDETERMINATE_BAR_SIZE/2, INDETERMINATE_BAR_SIZE);
@@ -83,10 +83,10 @@ void ProgressBar::draw(float x, float y, float width, float height, float a){
 	}else{
 		ofSetColor(255);
 		indeterminateFbo.getTextureReference().bind();
-		float scale = 2.0;
+		float scale = 5.0;
 
 		ofMesh m;
-		float indetOffset = -scale * ofGetElapsedTimef();
+		float indetOffset = - ofGetElapsedTimef();
 		m.setMode(OF_PRIMITIVE_TRIANGLES);
 
 		m.addVertex(ofVec2f(x,y));

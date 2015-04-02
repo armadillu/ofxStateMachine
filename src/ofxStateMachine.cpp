@@ -99,7 +99,6 @@ bool ofxStateMachine<T>::isReadyToProceed(){
 template <class T>
 void ofxStateMachine<T>::setError(string msg, float retryAgainInSeconds, int maxRetries_){
 
-
 	error = true;
 	errorMsg = msg;
 	numRetries++;
