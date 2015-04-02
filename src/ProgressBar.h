@@ -11,33 +11,40 @@
 
 #include "ofMain.h"
 
+#define INDETERMINATE_BAR_SIZE 100.0f
 
 class ProgressBar{
 
-	public:
+public:
 	
 	ProgressBar();
-	void setup(float startingValue, float targetValue, float animationFilter = 0.1);
+	void setup(float startingValue, float targetValue, float animationFilter = 0.2);
 	void update(float dt);
 	void draw(float x, float y, float width, float height, float a = 1.0f);
 	void draw(const ofRectangle & r, float a = 1.0f);
 	
 	void setValue(float v);
 	void setAnimatedValue(float v);
+	void setProgressIsIndeterminate(bool i);
+	bool getBarProgressIsIndeterminate(){return indeterminate;}
+
 
 	void setFGColor( ofColor c){ fgColor = c; }
 	void setBGColor( ofColor c){ bgColor = c; }
 
-	private:
+	float getCurrentValue(){return val;}
+private:
 
 	//animated bar
 	float val;
 	float targetVal;
 	float filter;
 
+	bool indeterminate;
 	float maxValue;
 
 	ofColor fgColor;
 	ofColor bgColor;
+	ofFbo indeterminateFbo;
 };
 

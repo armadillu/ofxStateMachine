@@ -34,9 +34,14 @@ void LoadingScreen::newScreen(string screenName,
 							  ofColor progressBarColor){
 
 	currentScreenName = screenName;
-	progress.setup(0, 1);
+	progress.setup(0, 1, 0.3);
 	progress.setBGColor(progressBarBgC);
 	progress.setFGColor(progressBarColor);
+}
+
+
+void LoadingScreen::setExtraBarInfo(string tempName){
+	extraBarInfo = tempName;
 }
 
 void LoadingScreen::updateScreenName(string s){
@@ -46,9 +51,17 @@ void LoadingScreen::updateScreenName(string s){
 void LoadingScreen::update(float currentValue, string status, float dt){
 
 	statusString = status;
-	if(ofGetFrameNum()%5 == 1){
-		progress.setAnimatedValue(currentValue);
+	if(currentValue >= 0.0 && currentValue <= 1.0f){
+		progress.setProgressIsIndeterminate(false);
+		if (progress.getCurrentValue() > currentValue){ //if going backwards, jump!
+			progress.setValue(currentValue);
+		}else{ //else animate
+			progress.setAnimatedValue(currentValue);
+		}
+	}else{ // indeterminate!
+		progress.setProgressIsIndeterminate(true);
 	}
+
 	progress.update(dt);
 }
 
@@ -83,7 +96,7 @@ ofRectangle LoadingScreen::draw(){
 
 	//progress bar font size bigger
 	fontSize *= 1.75;
-	string msg = currentScreenName;
+	string msg = currentScreenName + " " + extraBarInfo;
 	ofRectangle r = font->getBBox(msg, fontSize, 0, 0);
 	switch(((int)(ofGetFrameNum() * 0.2))%9){
 		case 0: msg += "...  ";break;

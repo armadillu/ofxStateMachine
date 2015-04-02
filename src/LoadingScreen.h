@@ -15,6 +15,7 @@
 #include "ofxFontStash.h"
 #include "ofxSvg.h"
 
+
 class LoadingScreen{
 
 public:
@@ -27,6 +28,8 @@ public:
 					ofColor progressBarBgColor,
 					ofColor progressBarColor
 			   		);
+
+	void setExtraBarInfo(string barInfo);
 
 	void updateScreenName(string s);
 
@@ -47,6 +50,7 @@ private:
 
 	string statusString;
 	string currentScreenName;
+	string extraBarInfo;
 
 	ofColor bgColor;
 	ofColor statusColor;

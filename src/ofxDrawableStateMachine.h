@@ -26,7 +26,6 @@ public:
 
 	void setup(string fontPath, string svgLogoPath,
 			   ofColor screenBgColor, ofColor textColor){
-
 		screen.setup(fontPath, svgLogoPath, screenBgColor, textColor);
 		
 	}
@@ -48,6 +47,10 @@ public:
 	}
 
 	void setStateProgress(float progress ); ///progress [0..1]
+
+	void setProgressBarExtraInfo(string newName){
+		screen.setExtraBarInfo(newName);
+	}
 
 	void setState(T newState, bool clearErrors = true){
 
