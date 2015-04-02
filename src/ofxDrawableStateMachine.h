@@ -62,7 +62,7 @@ public:
 			barFillColor = it->second;
 		}
 		screen.newScreen(ofxStateMachine<T>::getCurrentStateName(), //screen name
-						 ofColor::gray, //prog bar bg color
+						 ofColor(66), //prog bar bg color
 						 barFillColor //prog bar fill color
 						 );
 	}
