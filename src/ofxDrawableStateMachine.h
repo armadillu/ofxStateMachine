@@ -43,8 +43,8 @@ public:
 		screen.updateScreenName(ofxStateMachine<T>::getNameAndQuickStatusForState(ofxStateMachine<T>::state));
 	}
 
-	void draw(){
-		ofRectangle area = screen.draw();
+	void draw(ofRectangle r = ofRectangle(0,0, ofGetWidth(), ofGetHeight())){
+		ofRectangle area = screen.draw(r);
 		ofNotifyEvent(eventDraw, area, this);
 	}
 

@@ -66,18 +66,19 @@ void LoadingScreen::update(float currentValue, string status, float dt){
 }
 
 
-ofRectangle LoadingScreen::draw(){
+ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
 	if(!font){
 		ofLogError("LoadingScreen") << "Font Not Set!";
 		return;
 	}
 
-	ofClear(bgColor);
-	float padding = ofGetWidth()/20;
+	ofSetColor(bgColor);
+	ofRect(drawArea);
+	float padding = drawArea.width/20;
 
 	//status info
-	float fontSize = ofClamp(ofGetHeight() / 70., 11, 80);
+	float fontSize = ofClamp(drawArea.width / 70., 11, 80);
 	ofSetColor(0, 200);
 	font->drawMultiLine(statusString, fontSize, padding + 1.0f, padding + 1.0f);
 	ofSetColor(statusColor);
@@ -87,11 +88,9 @@ ofRectangle LoadingScreen::draw(){
 	//progress bar
 	float barH = ofGetHeight() / 30.;
 	float barY = ofGetHeight() * 0.80;
-	progress.draw( padding, barY, ofGetWidth() - 2 * padding, barH);
+	progress.draw( padding, barY, drawArea.width - 2 * padding, barH);
 	float svgW = lpLogoSvg.getWidth();
-	//float svgH = lpLogoSvg.getHeight();
 	float imgW = padding;//ofClamp(padding, 50, 150);
-	//float imgH = imgW / (svgW / svgH);
 	float scale = imgW / svgW;
 
 	//progress bar font size bigger
@@ -118,13 +117,9 @@ ofRectangle LoadingScreen::draw(){
 		lpLogoSvg.draw();
 	ofPopMatrix();
 
-	ofRectangle drawArea;
-	drawArea.x = padding;
-	drawArea.y = padding;
-	drawArea.width = ofGetWidth() - 2 * padding;
-	drawArea.height = barY - 2 * padding;
-
-	return drawArea;
+	ofRectangle areaAboveProgress = ofRectangle(padding, padding,
+												drawArea.width - 2 * padding, barY - 2 * padding );
+	return areaAboveProgress;
 }
 
 

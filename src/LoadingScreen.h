@@ -37,7 +37,7 @@ public:
 	void update(float currentValue, string status, float dt);
 
 	//returns area above progress bar, so you can custom draw if you want to.
-	ofRectangle draw();
+	ofRectangle draw(ofRectangle r);
 
 private:
 
