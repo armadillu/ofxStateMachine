@@ -44,8 +44,10 @@ public:
 	}
 
 	void draw(ofRectangle r = ofRectangle(0,0, ofGetWidth(), ofGetHeight())){
+		ofPushStyle();
 		ofRectangle area = screen.draw(r);
 		ofNotifyEvent(eventDraw, area, this);
+		ofPopStyle();
 	}
 
 	void setStateProgress(float progress ); ///progress [0..1]
