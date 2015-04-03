@@ -73,12 +73,14 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 		return;
 	}
 
+	float avgSize = (drawArea.width + drawArea.height) * 0.5;
+
 	ofSetColor(bgColor);
 	ofRect(drawArea);
-	float padding = drawArea.width/20;
+	float padding = avgSize / 40;
 
 	//status info
-	float fontSize = ofClamp(drawArea.width / 70., 11, 80);
+	float fontSize = ofClamp(drawArea.height / 50, 11, 50);
 	ofSetColor(0, 200);
 	font->drawMultiLine(statusString, fontSize, padding + 1.0f, padding + 1.0f);
 	ofSetColor(statusColor);
@@ -86,15 +88,15 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
 
 	//progress bar
-	float barH = ofGetHeight() / 30.;
-	float barY = ofGetHeight() * 0.80;
+	float barH = avgSize / 40.;
+	float barY = drawArea.height - padding * 2;
 	progress.draw( padding, barY, drawArea.width - 2 * padding, barH);
 	float svgW = lpLogoSvg.getWidth();
 	float imgW = padding;//ofClamp(padding, 50, 150);
 	float scale = imgW / svgW;
 
 	//progress bar font size bigger
-	fontSize *= 1.75;
+	fontSize *= 2.0;
 	string msg = currentScreenName + " " + extraBarInfo;
 	ofRectangle r = font->getBBox(msg, fontSize, 0, 0);
 	switch(((int)(ofGetFrameNum() * 0.2))%9){
@@ -108,11 +110,11 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 		case 8: msg += "..   ";break;
 	}
 	ofSetColor(255);
-	font->draw(msg, fontSize, ofGetWidth()/2 - r.width / 2, barY - r.y -0.5f * (r.height -barH) );
+	font->draw(msg, fontSize, drawArea.width/2 - r.width / 2, barY - r.y -0.5f * (r.height -barH) );
 
 	//LP logo
 	ofPushMatrix();
-		ofTranslate(ofGetWidth() - 2 * imgW, barY + barH * 2);
+		ofTranslate(drawArea.width - 2 * imgW, barY + barH * 2);
 		ofScale(scale, scale);
 		lpLogoSvg.draw();
 	ofPopMatrix();
