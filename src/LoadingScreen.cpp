@@ -70,7 +70,7 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
 	if(!font){
 		ofLogError("LoadingScreen") << "Font Not Set!";
-		return;
+		return ofRectangle();
 	}
 
 	float avgSize = (drawArea.width + drawArea.height) * 0.5;
