@@ -110,7 +110,7 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 		case 8: msg += "..   ";break;
 	}
 	ofSetColor(255);
-	font->draw(msg, fontSize, drawArea.width/2 - r.width / 2, barY - r.y -0.5f * (r.height -barH) );
+	font->draw(msg, barH, drawArea.width / 2 - r.width / 2, barY - r.y -0.5f * (r.height -barH) );
 
 	//LP logo
 	ofPushMatrix();
