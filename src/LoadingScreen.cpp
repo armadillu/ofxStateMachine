@@ -96,8 +96,13 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	float scale = imgW / svgW;
 
 	//progress bar font size bigger
-	fontSize *= 2.0;
-	string msg = currentScreenName + " " + extraBarInfo;
+	fontSize = barH * 0.8;
+	string t = currentScreenName;
+	ofStringReplace(t, "_", " ");
+	string t2 = extraBarInfo;
+	ofStringReplace(t2, "_", " ");
+
+	string msg = t + " " + t2;
 	ofRectangle r = font->getBBox(msg, fontSize, 0, 0);
 	switch(((int)(ofGetFrameNum() * 0.2))%9){
 		case 0: msg += "...  ";break;
@@ -110,7 +115,8 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 		case 8: msg += "..   ";break;
 	}
 	ofSetColor(255);
-	font->draw(msg, barH, drawArea.width / 2 - r.width / 2, barY - r.y -0.5f * (r.height -barH) );
+	float off = 0.5 * fabs(r.height - barH);
+	font->draw(msg, fontSize, drawArea.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y) );
 
 	//LP logo
 	ofPushMatrix();

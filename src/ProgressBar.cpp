@@ -83,7 +83,7 @@ void ProgressBar::draw(float x, float y, float width, float height, float a){
 	}else{
 		ofSetColor(255);
 		indeterminateFbo.getTextureReference().bind();
-		float scale = 5.0;
+		float scale = 10.0;
 
 		ofMesh m;
 		float indetOffset = - ofGetElapsedTimef();
