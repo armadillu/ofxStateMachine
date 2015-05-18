@@ -89,11 +89,11 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
 	//progress bar
 	float barH = avgSize / 40.;
-	float barY = drawArea.height - padding * 2;
+	float barY = drawArea.height - padding * 3;
 	progress.draw( padding, barY, drawArea.width - 2 * padding, barH);
 	float svgW = lpLogoSvg.getWidth();
-	float imgW = padding;//ofClamp(padding, 50, 150);
-	float scale = imgW / svgW;
+	float logoW = 2 * padding;//ofClamp(padding, 50, 150);
+	float scale = logoW / svgW;
 
 	//progress bar font size bigger
 	fontSize = barH * 0.8;
@@ -120,7 +120,7 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
 	//LP logo
 	ofPushMatrix();
-		ofTranslate(drawArea.width - 2 * imgW, barY + barH * 2);
+		ofTranslate(drawArea.width - padding - logoW, barY + barH + padding * 0.5 );
 		ofScale(scale, scale);
 		lpLogoSvg.draw();
 	ofPopMatrix();
