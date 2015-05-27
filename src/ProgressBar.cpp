@@ -33,12 +33,18 @@ void ProgressBar::setProgressIsIndeterminate(bool i){
 		indeterminateFbo.begin();
 		ofClear(bgColor);
 		ofSetColor(fgColor, 200);
-		ofBeginShape();
-		ofVertex(0, INDETERMINATE_BAR_SIZE);
-		ofVertex(INDETERMINATE_BAR_SIZE/2, INDETERMINATE_BAR_SIZE);
-		ofVertex(INDETERMINATE_BAR_SIZE, 0);
-		ofVertex(INDETERMINATE_BAR_SIZE/2, 0);
-		ofEndShape();
+		float w = INDETERMINATE_BAR_SIZE / 8;
+		for(int i = -1; i < 2; i++){
+			ofBeginShape();
+			int x = i * INDETERMINATE_BAR_SIZE / 2;
+			int x2 = (i+1) * INDETERMINATE_BAR_SIZE / 2;
+			ofVertex(x2 - w, 0);
+			ofVertex(x2 + w, 0);
+			ofVertex(x + w, INDETERMINATE_BAR_SIZE);
+			ofVertex(x - w, INDETERMINATE_BAR_SIZE);
+			ofEndShape();
+		}
+
 		indeterminateFbo.end();
 		indeterminateFbo.getTextureReference().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
@@ -83,7 +89,7 @@ void ProgressBar::draw(float x, float y, float width, float height, float a){
 	}else{
 		ofSetColor(255);
 		indeterminateFbo.getTextureReference().bind();
-		float scale = 10.0;
+		float scale = 1.0;
 
 		ofMesh m;
 		float indetOffset = - ofGetElapsedTimef();
