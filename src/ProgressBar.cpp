@@ -83,9 +83,19 @@ void ProgressBar::draw(float x, float y, float width, float height, float a){
 	ofPushStyle();
 	if(!indeterminate){
 		ofSetColor(ofColor(bgColor, 255 * a));
+		#if (OF_VERSION_MINOR >= 9)
 		ofDrawRectangle( x + width * percent, y, width * (1.0f-percent), height);
+		#else
+		ofRect( x + width * percent, y, width * (1.0f-percent), height);
+		#endif
 		ofSetColor(ofColor(fgColor, 255 * a));
+
+		#if (OF_VERSION_MINOR >= 9)
 		ofDrawRectangle( x, y, width * percent, height);
+		#else
+		ofRect( x, y, width * percent, height);
+		#endif
+
 	}else{
 		ofSetColor(255);
 		indeterminateFbo.getTextureReference().bind();
