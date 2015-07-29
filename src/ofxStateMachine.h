@@ -79,6 +79,7 @@ protected:
 
 	T state;
 	T prevState;
+	bool firstState;
 
 	float stateTime; //count time spent in this state;
 	float waitTime; //used to control flow, countdown
