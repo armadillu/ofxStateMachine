@@ -81,11 +81,35 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
 	//status info
 	float fontSize = ofClamp(drawArea.height / 50, 11, 50);
-	ofSetColor(0, 200);
-	font->drawMultiLine(statusString, fontSize, padding + 1.0f, padding + 1.0f);
-	ofSetColor(statusColor);
-	font->drawMultiLine(statusString, fontSize, padding, padding);
+	float lineH = font->getBBox("M", fontSize, 0, 0).height;
+	float usableDrawH = (drawArea.height - 5 * padding); //abobe the progress bar + 1 extra padding
+	float numLines = usableDrawH / lineH; //more or less how many lines can fit in this space?
 
+
+	//as this could be lots of lines, lets remove the lines that would be offscreen so that we dont have to draw them
+	vector<string> splitLines = ofSplitString(statusString, "\n");
+	if (splitLines.size() > numLines){
+		splitLines.erase(splitLines.begin(), splitLines.begin() + splitLines.size() - 1 - numLines);
+	}
+
+	string shortMsg;
+	for(int i = 0; i < splitLines.size(); i++){
+		shortMsg += splitLines[i] + "\n";
+	}
+
+	ofVec2f msgBox = font->drawMultiColumnFormatted(shortMsg, fontSize, 10000000, false, true); //dry run!
+
+	//offset to implement a cheap auto-scroll when status message is longer than the area we have available
+	float offsetY = 0;
+
+	if ( msgBox.y > usableDrawH ){
+		offsetY = msgBox.y - usableDrawH;
+	}
+	ofSetColor(statusColor);
+	ofPushMatrix();
+		ofTranslate(padding + 1.0f, padding + 1.0f - offsetY);
+		font->drawMultiColumnFormatted(shortMsg, fontSize, 10000000, false, false); //dry run
+	ofPopMatrix();
 
 	//progress bar
 	float barH = avgSize / 40.;

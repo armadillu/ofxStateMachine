@@ -39,7 +39,7 @@ public:
 
 	void updateState(float progress/*[0..1]*/, string status){
 		string stateStatus = ofxStateMachine<T>::getStatusMessage();
-		screen.update(progress, status + "\n\n" + stateStatus , ofGetLastFrameTime());
+		screen.update(progress, stateStatus + "\n" + status, ofGetLastFrameTime());
 		screen.updateScreenName(ofxStateMachine<T>::getNameAndQuickStatusForState(ofxStateMachine<T>::state));
 	}
 
