@@ -13,7 +13,9 @@
 #include "ofMain.h"
 #include "ProgressBar.h"
 #include "ofxFontStash.h"
+#ifdef LOGO_SUPPORT
 #include "ofxSvg.h"
+#endif
 
 
 class LoadingScreen{
@@ -44,7 +46,9 @@ private:
 	ProgressBar				progress;
 
 	ofxFontStash* 			font;
+	#ifdef LOGO_SUPPORT
 	ofxSVG					lpLogoSvg;
+	#endif
 
 
 

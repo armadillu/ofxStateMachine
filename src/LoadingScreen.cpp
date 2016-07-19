@@ -14,6 +14,7 @@ LoadingScreen::LoadingScreen(){
 
 void LoadingScreen::setup(string fontName, string logoSvgPath, ofColor bgColor_, ofColor statusC){
 
+	#ifdef LOGO_SUPPORT
 	if(ofFile::doesFileExist(logoSvgPath)){
 		lpLogoSvg.load(logoSvgPath);
 		for(int i = 0; i < lpLogoSvg.getNumPath(); i++){
@@ -22,6 +23,7 @@ void LoadingScreen::setup(string fontName, string logoSvgPath, ofColor bgColor_,
 	}else{
 		ofLogError("LoadingScreen") << "SVG LOGO file not found " << logoSvgPath;
 	}
+	#endif
 	statusColor = statusC;
 	bgColor = bgColor_;
 	font = new ofxFontStash();
@@ -115,9 +117,11 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	float barH = avgSize / 40.;
 	float barY = drawArea.height - padding * 3;
 	progress.draw( padding, barY, drawArea.width - 2 * padding, barH);
+	#ifdef LOGO_SUPPORT
 	float svgW = lpLogoSvg.getWidth();
 	float logoW = 2 * padding;//ofClamp(padding, 50, 150);
 	float scale = logoW / svgW;
+	#endif
 
 	//progress bar font size bigger
 	fontSize = barH * 0.8;
@@ -143,11 +147,13 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	font->draw(msg, fontSize, drawArea.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y) );
 
 	//LP logo
+	#ifdef LOGO_SUPPORT
 	ofPushMatrix();
 		ofTranslate(drawArea.width - padding - logoW, barY + barH + padding * 0.5 );
 		ofScale(scale, scale);
 		lpLogoSvg.draw();
 	ofPopMatrix();
+	#endif
 
 	ofRectangle areaAboveProgress = ofRectangle(padding, padding,
 												drawArea.width - 2 * padding, barY - 2 * padding );
