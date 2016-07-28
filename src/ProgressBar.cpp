@@ -105,16 +105,16 @@ void ProgressBar::draw(float x, float y, float width, float height, float a){
 		float indetOffset = - ofGetElapsedTimef();
 		m.setMode(OF_PRIMITIVE_TRIANGLES);
 
-		m.addVertex(ofVec2f(x,y));
+		m.addVertex(ofVec3f(x,y));
 		m.addTexCoord(ofVec2f(indetOffset, 0));
 
-		m.addVertex(ofVec2f(x + width, y));
+		m.addVertex(ofVec3f(x + width, y));
 		m.addTexCoord(ofVec2f(indetOffset + scale * width / INDETERMINATE_BAR_SIZE , 0));
 
-		m.addVertex(ofVec2f(x + width, y + height));
+		m.addVertex(ofVec3f(x + width, y + height));
 		m.addTexCoord(ofVec2f(indetOffset + scale * width / INDETERMINATE_BAR_SIZE, scale * height / INDETERMINATE_BAR_SIZE));
 
-		m.addVertex(ofVec2f(x, y + height));
+		m.addVertex(ofVec3f(x, y + height));
 		m.addTexCoord(ofVec2f(indetOffset, scale * height / INDETERMINATE_BAR_SIZE));
 
 		m.addIndex(0); m.addIndex(1); m.addIndex(2);
