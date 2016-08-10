@@ -14,7 +14,7 @@ ofxStateMachine<T>::ofxStateMachine(){
 	stateTime = waitTime = 0.0f;
 	firstState = true;
 	clearErrorStatus();
-	ofAddListener(ofEvents().update, this, &ofxStateMachine::update);
+	isSetup = false;
 }
 
 
@@ -32,6 +32,11 @@ void ofxStateMachine<T>::setNameForState(T state_, string name){
 
 template <class T>
 void ofxStateMachine<T>::setState(T newState, bool clearErrors){
+
+	if(!isSetup){
+		isSetup = true;
+		ofAddListener(ofEvents().update, this, &ofxStateMachine::update);
+	}
 
 	if(clearErrors){
 		stateTime = waitTime = 0.0f;

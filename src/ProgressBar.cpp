@@ -14,9 +14,6 @@ ProgressBar::ProgressBar(){
 	targetVal = 0;
 	bgColor = ofColor::green;
 	fgColor = ofColor::white;
-	ofDisableArbTex();
-	indeterminateFbo.allocate(INDETERMINATE_BAR_SIZE, INDETERMINATE_BAR_SIZE, GL_RGBA, 4);
-	ofEnableArbTex();
 }
 
 void ProgressBar::setup(float startingValue, float maxValue_, float animFilter){
@@ -24,6 +21,18 @@ void ProgressBar::setup(float startingValue, float maxValue_, float animFilter){
 	setValue(startingValue);
 	filter = animFilter;
 	indeterminate = false;
+	if(!indeterminateFbo.isAllocated()){
+		ofFbo::Settings s;
+		s.internalformat = GL_RGBA;
+		s.textureTarget = GL_TEXTURE_2D;
+		s.maxFilter = GL_LINEAR;
+		s.useDepth = false;
+		s.useStencil = false;
+		s.width = INDETERMINATE_BAR_SIZE; // setup fbo for whole scene - ARB! for blur shader
+		s.height = INDETERMINATE_BAR_SIZE;
+		s.numSamples = 4;
+		indeterminateFbo.allocate(s);
+	}
 }
 
 void ProgressBar::setProgressIsIndeterminate(bool i){

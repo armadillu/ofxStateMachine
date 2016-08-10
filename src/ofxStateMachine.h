@@ -92,6 +92,7 @@ protected:
 	map<T, string> stateNames;
 
 	void clearErrorStatus();
+	bool isSetup = false;
 };
 
 
