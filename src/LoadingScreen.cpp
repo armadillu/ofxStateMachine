@@ -78,7 +78,7 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	float avgSize = (drawArea.width + drawArea.height) * 0.5;
 
 	ofSetColor(bgColor);
-	ofRect(drawArea);
+	ofDrawRectangle(drawArea);
 	float padding = avgSize / 40;
 
 	//status info

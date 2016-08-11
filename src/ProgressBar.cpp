@@ -55,7 +55,7 @@ void ProgressBar::setProgressIsIndeterminate(bool i){
 		}
 
 		indeterminateFbo.end();
-		indeterminateFbo.getTextureReference().setTextureWrap(GL_REPEAT, GL_REPEAT);
+		indeterminateFbo.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
 		ofPopStyle();
 	}
@@ -107,7 +107,7 @@ void ProgressBar::draw(float x, float y, float width, float height, float a){
 
 	}else{
 		ofSetColor(255);
-		indeterminateFbo.getTextureReference().bind();
+		indeterminateFbo.getTexture().bind();
 		float scale = 1.0;
 
 		ofMesh m;
@@ -129,7 +129,7 @@ void ProgressBar::draw(float x, float y, float width, float height, float a){
 		m.addIndex(0); m.addIndex(1); m.addIndex(2);
 		m.addIndex(0); m.addIndex(2); m.addIndex(3);
 		m.draw();
-		indeterminateFbo.getTextureReference().unbind();
+		indeterminateFbo.getTexture().unbind();
 
 	}
 	ofPopStyle();
