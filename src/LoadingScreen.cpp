@@ -155,8 +155,8 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	ofPopMatrix();
 	#endif
 
-	ofRectangle areaAboveProgress = ofRectangle(padding, padding,
-												drawArea.width - 2 * padding, barY - 2 * padding );
+	ofRectangle areaAboveProgress = ofRectangle(padding, 2 * padding,
+												drawArea.width - 2 * padding, barY - 3 * padding );
 	return areaAboveProgress;
 }
 
