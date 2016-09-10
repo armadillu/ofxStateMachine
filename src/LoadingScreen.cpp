@@ -124,7 +124,7 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	#endif
 
 	//progress bar font size bigger
-	fontSize = barH * 0.8;
+	fontSize = barH * 0.6;
 	string t = currentScreenName;
 	ofStringReplace(t, "_", " ");
 	string t2 = extraBarInfo;
