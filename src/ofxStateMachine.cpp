@@ -125,7 +125,7 @@ void ofxStateMachine<T>::setError(string msg, float retryAgainInSeconds, int max
 template <class T>
 string ofxStateMachine<T>::getStatusMessage(){
 	string msg;// = "State: " + getNameForState(state);
-	msg += "Time in State: " + ofToString(stateTime, 1) + "sec";
+	msg += "Time in State: " + ofToString(stateTime, 1) + " seconds";
 	if(error){
 		msg += "\nError: " + errorMsg;
 		msg += "\nRetrying in: " + ofToString(waitTime, 1) + " seconds";
