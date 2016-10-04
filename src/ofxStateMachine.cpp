@@ -33,6 +33,7 @@ void ofxStateMachine<T>::setNameForState(T state_, string name){
 template <class T>
 void ofxStateMachine<T>::setState(T newState, bool clearErrors){
 
+	float timeInPrevState = stateTime;
 	if(!isSetup){
 		isSetup = true;
 		ofAddListener(ofEvents().update, this, &ofxStateMachine::update);
@@ -49,7 +50,7 @@ void ofxStateMachine<T>::setState(T newState, bool clearErrors){
 	}
 	prevState = state;
 	state = newState;
-	StateChangedEventArgs eventArgs = {prevState, state};
+	StateChangedEventArgs eventArgs = {prevState, state, timeInPrevState};
 
 	ofNotifyEvent(eventStateChanged, eventArgs, this);
 }

@@ -62,6 +62,7 @@ public:
 	struct StateChangedEventArgs{
 		T oldState;
 		T newState;
+		float timeInPrevState;
 	};
 
 	struct ErrorStateEventArgs{
