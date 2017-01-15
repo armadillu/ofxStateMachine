@@ -20,7 +20,9 @@ ofxStateMachine<T>::ofxStateMachine(){
 
 template <class T>
 ofxStateMachine<T>::~ofxStateMachine(){
-	ofRemoveListener(ofEvents().update, this, &ofxStateMachine::update);
+	if(isSetup){
+		ofRemoveListener(ofEvents().update, this, &ofxStateMachine::update);
+	}
 }
 
 
