@@ -46,10 +46,10 @@ private:
 	ProgressBar				progress;
 
 	ofxFontStash* 			font;
+	ofTrueTypeFont			font2;
 	#ifdef LOGO_SUPPORT
 	ofxSVG					lpLogoSvg;
 	#endif
-
 
 
 	string statusString;

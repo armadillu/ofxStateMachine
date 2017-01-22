@@ -26,8 +26,14 @@ void LoadingScreen::setup(string fontName, string logoSvgPath, ofColor bgColor_,
 	#endif
 	statusColor = statusC;
 	bgColor = bgColor_;
-	font = new ofxFontStash();
-	font->setup(fontName, 1.33);
+	if(!ofIsGLProgrammableRenderer()){
+		font = new ofxFontStash();
+		font->setup(fontName, 1.33);
+	}else{
+		float fontSizeGuess = ofGetHeight() / 70.;
+		font2.load(fontName, fontSizeGuess, true, false, false);
+		font2.setLineHeight(fontSizeGuess * 1.33);
+	}
 }
 
 
@@ -70,10 +76,10 @@ void LoadingScreen::update(float currentValue, string status, float dt){
 
 ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
-	if(!font){
-		ofLogError("LoadingScreen") << "Font Not Set!";
-		return ofRectangle();
-	}
+//	if(!font){
+//		ofLogError("LoadingScreen") << "Font Not Set!";
+//		return ofRectangle();
+//	}
 
 	float avgSize = (drawArea.width + drawArea.height) * 0.5;
 
@@ -83,7 +89,12 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
 	//status info
 	float fontSize = ofClamp(drawArea.height / 50, 11, 50);
-	float lineH = font->getBBox("M", fontSize, 0, 0).height;
+	float lineH;
+	if(!ofIsGLProgrammableRenderer()){
+		lineH = font->getBBox("M", fontSize, 0, 0).height;
+	}else{
+		lineH = font2.getLineHeight();
+	}
 	float usableDrawH = (drawArea.height - 5 * padding); //abobe the progress bar + 1 extra padding
 	float numLines = usableDrawH / lineH; //more or less how many lines can fit in this space?
 
@@ -99,7 +110,15 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 		shortMsg += splitLines[i] + "\n";
 	}
 
-	ofVec2f msgBox = font->drawMultiColumnFormatted(shortMsg, fontSize, 10000000, false, true); //dry run!
+	ofVec2f msgBox;
+	ofRectangle bbox;
+	if(!ofIsGLProgrammableRenderer()){
+		msgBox = font->drawMultiColumnFormatted(shortMsg, fontSize, 10000000, false, true); //dry run!
+	}else{
+		bbox = font2.getStringBoundingBox(shortMsg, 0,0 );
+		msgBox.y = bbox.height;
+		msgBox.x = bbox.width;
+	}
 
 	//offset to implement a cheap auto-scroll when status message is longer than the area we have available
 	float offsetY = 0;
@@ -110,7 +129,11 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	ofSetColor(statusColor);
 	ofPushMatrix();
 		ofTranslate(padding + 1.0f, padding + 1.0f - offsetY);
-		font->drawMultiColumnFormatted(shortMsg, fontSize, 10000000, false, false); //dry run
+		if(!ofIsGLProgrammableRenderer()){
+			font->drawMultiColumnFormatted(shortMsg, fontSize, 10000000, false, false); //dry run
+		}else{
+			font2.drawString(shortMsg, 0, 0);
+		}
 	ofPopMatrix();
 
 	//progress bar
@@ -131,7 +154,12 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	ofStringReplace(t2, "_", " ");
 
 	string msg = t + " " + t2;
-	ofRectangle r = font->getBBox(msg, fontSize, 0, 0);
+	ofRectangle r;
+	if(!ofIsGLProgrammableRenderer()){
+		r = font->getBBox(msg, fontSize, 0, 0);
+	}else{
+		r = font2.getStringBoundingBox(msg, 0, 0);
+	}
 	switch(((int)(ofGetFrameNum() * 0.2))%9){
 		case 0: msg += "...  ";break;
 		case 1: msg += " ... ";break;
@@ -144,7 +172,11 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	}
 	ofSetColor(255);
 	float off = 0.5 * fabs(r.height - barH);
-	font->draw(msg, fontSize, drawArea.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y) );
+	if(!ofIsGLProgrammableRenderer()){
+		font->draw(msg, fontSize, drawArea.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y) );
+	}else{
+		font2.drawString(msg, drawArea.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y));
+	}
 
 	//LP logo
 	#ifdef LOGO_SUPPORT
