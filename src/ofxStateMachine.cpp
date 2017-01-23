@@ -12,6 +12,7 @@
 template <class T>
 ofxStateMachine<T>::ofxStateMachine(){
 	stateTime = waitTime = 0.0f;
+	lastStateChangeTime = ofGetElapsedTimef();
 	firstState = true;
 	clearErrorStatus();
 	isSetup = false;
@@ -35,7 +36,8 @@ void ofxStateMachine<T>::setNameForState(T state_, string name){
 template <class T>
 void ofxStateMachine<T>::setState(T newState, bool clearErrors){
 
-	float timeInPrevState = stateTime;
+	float now = ofGetElapsedTimef();
+	float timeInPrevState = now - lastStateChangeTime;
 	if(!isSetup){
 		isSetup = true;
 		ofAddListener(ofEvents().update, this, &ofxStateMachine::update);
@@ -55,6 +57,7 @@ void ofxStateMachine<T>::setState(T newState, bool clearErrors){
 	StateChangedEventArgs eventArgs = {prevState, state, timeInPrevState};
 
 	ofNotifyEvent(eventStateChanged, eventArgs, this);
+	lastStateChangeTime = now;
 }
 
 
@@ -96,9 +99,9 @@ bool ofxStateMachine<T>::hasError(){ return error; }
 
 template <class T>
 void ofxStateMachine<T>::update(ofEventArgs & args){
-	float dt = ofGetLastFrameTime();
-	stateTime += dt;
-	waitTime -= dt;
+	float now = ofGetElapsedTimef();
+	stateTime = now - lastStateChangeTime;
+	waitTime -= ofGetLastFrameTime();
 	if (waitTime < 0.0f) waitTime = 0.0f;
 }
 

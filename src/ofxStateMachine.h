@@ -94,6 +94,7 @@ protected:
 
 	void clearErrorStatus();
 	bool isSetup = false;
+	float lastStateChangeTime = 0;
 };
 
 
