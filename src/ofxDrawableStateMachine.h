@@ -45,8 +45,9 @@ public:
 
 	void draw(ofRectangle r = ofRectangle(0,0, ofGetWidth(), ofGetHeight())){
 		ofPushStyle();
-		ofRectangle area = screen.draw(r);
+		ofRectangle area = screen.getDrawableArea();
 		ofNotifyEvent(eventDraw, area, this);
+		screen.draw(r);
 		ofPopStyle();
 	}
 

@@ -39,7 +39,8 @@ public:
 	void update(float currentValue, string status, float dt);
 
 	//returns area above progress bar, so you can custom draw if you want to.
-	ofRectangle draw(ofRectangle r);
+	ofRectangle getDrawableArea(){return drawArea;}
+	void draw(ofRectangle r);
 
 private:
 
@@ -58,6 +59,7 @@ private:
 
 	ofColor bgColor;
 	ofColor statusColor;
+	ofRectangle drawArea;
 };
 
 #endif /* defined(__BaseApp__LoadingScreen__) */

@@ -74,28 +74,23 @@ void LoadingScreen::update(float currentValue, string status, float dt){
 }
 
 
-ofRectangle LoadingScreen::draw(ofRectangle drawArea){
+void LoadingScreen::draw(ofRectangle bounds){
 
-//	if(!font){
-//		ofLogError("LoadingScreen") << "Font Not Set!";
-//		return ofRectangle();
-//	}
-
-	float avgSize = (drawArea.width + drawArea.height) * 0.5;
+	float avgSize = (bounds.width + bounds.height) * 0.5;
 
 	ofSetColor(bgColor);
-	ofDrawRectangle(drawArea);
+	ofDrawRectangle(bounds);
 	float padding = avgSize / 40;
 
 	//status info
-	float fontSize = ofClamp(drawArea.height / 50, 11, 50);
+	float fontSize = ofClamp(bounds.height / 50, 11, 50);
 	float lineH;
 	if(!ofIsGLProgrammableRenderer()){
 		lineH = font->getBBox("M", fontSize, 0, 0).height;
 	}else{
 		lineH = font2.getLineHeight();
 	}
-	float usableDrawH = (drawArea.height - 5 * padding); //abobe the progress bar + 1 extra padding
+	float usableDrawH = (bounds.height - 5 * padding); //abobe the progress bar + 1 extra padding
 	float numLines = usableDrawH / lineH; //more or less how many lines can fit in this space?
 
 
@@ -138,8 +133,8 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 
 	//progress bar
 	float barH = avgSize / 40.;
-	float barY = drawArea.height - padding * 3;
-	progress.draw( padding, barY, drawArea.width - 2 * padding, barH);
+	float barY = bounds.height - padding * 3;
+	progress.draw( padding, barY, bounds.width - 2 * padding, barH);
 	#ifdef LOGO_SUPPORT
 	float svgW = lpLogoSvg.getWidth();
 	float logoW = 2 * padding;//ofClamp(padding, 50, 150);
@@ -173,9 +168,9 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	ofSetColor(255);
 	float off = 0.5 * fabs(r.height - barH);
 	if(!ofIsGLProgrammableRenderer()){
-		font->draw(msg, fontSize, drawArea.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y) );
+		font->draw(msg, fontSize, bounds.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y) );
 	}else{
-		font2.drawString(msg, drawArea.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y));
+		font2.drawString(msg, bounds.width / 2 - r.width / 2, barY + barH - off - (r.height + r.y));
 	}
 
 	//LP logo
@@ -187,9 +182,7 @@ ofRectangle LoadingScreen::draw(ofRectangle drawArea){
 	ofPopMatrix();
 	#endif
 
-	ofRectangle areaAboveProgress = ofRectangle(padding, 2 * padding,
-												drawArea.width - 2 * padding, barY - 3 * padding );
-	return areaAboveProgress;
+	drawArea = ofRectangle(padding, 2 * padding, bounds.width - 2 * padding, barY - 3 * padding );
 }
 
 
