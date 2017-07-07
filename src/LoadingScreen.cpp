@@ -101,7 +101,7 @@ void LoadingScreen::draw(ofRectangle bounds){
 	}
 
 	string shortMsg;
-	for(int i = 0; i < splitLines.size(); i++){
+	for(size_t i = 0; i < splitLines.size(); i++){
 		shortMsg += splitLines[i] + "\n";
 	}
 
