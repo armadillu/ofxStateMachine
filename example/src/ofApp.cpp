@@ -9,16 +9,16 @@ void ofApp::setup(){
 	//our content manaer
 	contentManager.setup();
 
-	dsm.setup("fonts/VeraMono-Bold.ttf", LP_SVG_LOGO_PATH, ofColor::black, ofColor::ivory);
+	dsm.setup("fonts/VeraMono-Bold.ttf", "", ofColor::black, ofColor::ivory);
 
 	//listen to state machine changes
 	ofAddListener(dsm.eventStateChanged, this, &ofApp::stateChanged);
 	ofAddListener(dsm.eventStateError, this, &ofApp::stateError);
 
 	//init state names
-	dsm.SET_NAME_AND_COLOR_FOR_STATE(LOADING_CONTENT, ofColor::green);
-	dsm.SET_NAME_AND_COLOR_FOR_STATE(LOADING_CONTENT_FAILED, ofColor::red);
-	dsm.SET_NAME_AND_COLOR_FOR_STATE(RUNNING, ofColor::gray);
+	dsm.SET_NAME_AND_COLOR_FOR_STATE(LOADING_CONTENT, ofColor::green, ofColor::gray);
+	dsm.SET_NAME_AND_COLOR_FOR_STATE(LOADING_CONTENT_FAILED, ofColor::red, ofColor::gray);
+	dsm.SET_NAME_AND_COLOR_FOR_STATE(RUNNING, ofColor::white, ofColor::gray);
 
 	//set initial state;
 	dsm.setState(LOADING_CONTENT);

@@ -1,12 +1,22 @@
 #pragma once
 
 #include "ofMain.h"
-#include "LoadingScreen.h"
 
 #include "ofxDrawableStateMachine.h"
-#include "DummyContentManager.h"
 
-#define LP_SVG_LOGO_PATH "images/LocalProjects_logo.svg"
+
+
+
+class DummyContentManager{
+public:
+	void setup(){}
+	void fetchContent(){}
+	void update(){};
+	float getPercentDone(){return fmod(ofGetElapsedTimef(), 1);}
+	bool isBusy(){return true;}
+	bool isContentReady(){return true;}
+	bool foundError(){return false;}
+};
 
 
 const float loadJsonTime = 6.0;
