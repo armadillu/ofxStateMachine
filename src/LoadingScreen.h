@@ -12,7 +12,7 @@
 
 #include "ofMain.h"
 #include "ProgressBar.h"
-#include "ofxFontStash.h"
+
 #ifdef LOGO_SUPPORT
 #include "ofxSvg.h"
 #endif
@@ -46,12 +46,10 @@ private:
 
 	ProgressBar				progress;
 
-	ofxFontStash* 			font;
 	ofTrueTypeFont			font2;
 	#ifdef LOGO_SUPPORT
 	ofxSVG					lpLogoSvg;
 	#endif
-
 
 	string statusString;
 	string currentScreenName;
