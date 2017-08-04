@@ -57,6 +57,8 @@ public:
 		screen.setExtraBarInfo(newName);
 	}
 
+	ofRectangle getUserDrawableArea(){return screen.getDrawableArea();}
+
 	void setState(T newState, bool clearErrors = true){
 
 		ofxStateMachine<T>::setState(newState, clearErrors);
