@@ -23,20 +23,20 @@ class LoadingScreen{
 public:
 
 	LoadingScreen();
-	void setup(string fontName, string logoSvgPath, ofColor bgColor, ofColor status);
+	void setup(std::string fontName, std::string logoSvgPath, ofColor bgColor, ofColor status);
 
 	//for each new "stage", tell me your stage name, colors
-	void newScreen(	string screenName,
+	void newScreen(	std::string screenName,
 					ofColor progressBarBgColor,
 					ofColor progressBarColor
 			   		);
 
-	void setExtraBarInfo(string barInfo);
+	void setExtraBarInfo(std::string barInfo);
 
-	void updateScreenName(string s);
+	void updateScreenName(std::string s);
 
 	//then slowly increase that number to animate the progressbar
-	void update(float currentValue, string status, float dt);
+	void update(float currentValue, std::string status, float dt);
 
 	//returns area above progress bar, so you can custom draw if you want to.
 	ofRectangle getDrawableArea(){return drawArea;}
@@ -51,9 +51,9 @@ private:
 	ofxSVG					lpLogoSvg;
 	#endif
 
-	string statusString;
-	string currentScreenName;
-	string extraBarInfo;
+	std::string statusString;
+	std::string currentScreenName;
+	std::string extraBarInfo;
 
 	ofColor bgColor;
 	ofColor statusColor;

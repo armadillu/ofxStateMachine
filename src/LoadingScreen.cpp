@@ -8,6 +8,8 @@
 
 #include "LoadingScreen.h"
 
+using namespace std;
+
 LoadingScreen::LoadingScreen(){
 }
 

@@ -25,20 +25,20 @@ class ofxDrawableStateMachine: public ofxStateMachine<T>{
 
 public:
 
-	void setup(string fontPath, string svgLogoPath,
+	void setup(std::string fontPath, std::string svgLogoPath,
 			   ofColor screenBgColor, ofColor textColor){
 		screen.setup(fontPath, svgLogoPath, screenBgColor, textColor);
 		
 	}
 
-	void setNameAndBarColorForState(T state, string name, ofColor barColor, ofColor barBGColor){
+	void setNameAndBarColorForState(T state, std::string name, ofColor barColor, ofColor barBGColor){
 		ofxStateMachine<T>::setNameForState( state, name);
 		stateColors[state] = barColor;
 		stateBgColors[state] = barBGColor;
 	}
 
-	void updateState(float progress/*[0..1]*/, string status){ //if progress is not [0..1], it shows an indeterminate animation
-		string stateStatus = ofxStateMachine<T>::getStatusMessage();
+	void updateState(float progress/*[0..1]*/, std::string status){ //if progress is not [0..1], it shows an indeterminate animation
+		std::string stateStatus = ofxStateMachine<T>::getStatusMessage();
 		screen.update(progress, stateStatus + "\n" + status, ofGetLastFrameTime());
 		screen.updateScreenName(ofxStateMachine<T>::getNameAndQuickStatusForState(ofxStateMachine<T>::state));
 	}
@@ -53,7 +53,7 @@ public:
 
 	void setStateProgress(float progress ); ///progress [0..1]
 
-	void setProgressBarExtraInfo(string newName){
+	void setProgressBarExtraInfo(std::string newName){
 		screen.setExtraBarInfo(newName);
 	}
 

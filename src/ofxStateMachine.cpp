@@ -8,6 +8,7 @@
 
 #include "ofxStateMachine.h"
 
+using namespace std;
 
 template <class T>
 ofxStateMachine<T>::ofxStateMachine(){

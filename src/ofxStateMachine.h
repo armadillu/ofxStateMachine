@@ -23,9 +23,9 @@ public:
 
 /// INIT ///////////////////////////////////////////////////////////////
 
-	void setNameForState(T state_, string name);
-	string getNameForState(T state_);
-	string getNameAndQuickStatusForState(T state_);
+	void setNameForState(T state_, std::string name);
+	std::string getNameForState(T state_);
+	std::string getNameAndQuickStatusForState(T state_);
 
 
 /// SETTING / GETTING STATE /////////////////////////////////////////////
@@ -33,13 +33,13 @@ public:
 	void setState(T newState, bool clearPreviousErr = true);
 	T getState();
 
-	string getCurrentStateName();
+	std::string getCurrentStateName();
 	float getElapsedTimeInCurrentState();
 
 /// IN-STATE ERROR HANDLING / RETRY N TIMES /////////////////////////////
 
 	//we found an error, we stay on the same state; we will retry N times in M seconds
-	void setError(string msg, float retryAgainInSeconds, int maxRetries_);
+	void setError(std::string msg, float retryAgainInSeconds, int maxRetries_);
 	bool hasError(); //see if we reported an error before (in the current state)
 
 	int getNumTimesRetried();
@@ -56,7 +56,7 @@ public:
 
 /// DEBUG ////////////////////////////////////////////////////////////////
 
-	string getStatusMessage();
+	std::string getStatusMessage();
 
 
 	struct StateChangedEventArgs{
@@ -67,7 +67,7 @@ public:
 
 	struct ErrorStateEventArgs{
 		T state;
-		string errorMsg;
+		std::string errorMsg;
 		int numTimes;
 	};
 
@@ -88,9 +88,9 @@ protected:
 	int maxRetries; //how many times to retry max before
 
 	bool error;
-	string errorMsg;
+	std::string errorMsg;
 
-	map<T, string> stateNames;
+	std::map<T, std::string> stateNames;
 
 	void clearErrorStatus();
 	bool isSetup = false;
