@@ -23,7 +23,7 @@ void ProgressBar::setup(float startingValue, float maxValue_, float animFilter){
 	indeterminate = false;
 	if(!indeterminateFbo.isAllocated()){
 		ofFbo::Settings s;
-		s.internalformat = GL_RGBA;
+		s.internalformat = GL_RGB;
 		s.textureTarget = GL_TEXTURE_2D;
 		s.maxFilter = GL_LINEAR;
 		s.useDepth = false;
@@ -37,13 +37,13 @@ void ProgressBar::setup(float startingValue, float maxValue_, float animFilter){
 
 void ProgressBar::setProgressIsIndeterminate(bool i){
 
-	if(i && i != indeterminate){ //update fbo for indeterminate colors
+	if(i && !indeterminate){ //update fbo for indeterminate colors
 		ofPushStyle();
 		indeterminateFbo.begin();
 		ofClear(bgColor);
-		ofSetColor(fgColor, 200);
+		ofSetColor(fgColor * 0.8);
 		float w = INDETERMINATE_BAR_SIZE / 8;
-		for(int i = -1; i < 2; i++){
+		for(int i = -1; i < 4; i++){
 			ofBeginShape();
 			int x = i * INDETERMINATE_BAR_SIZE / 2;
 			int x2 = (i+1) * INDETERMINATE_BAR_SIZE / 2;
@@ -56,6 +56,12 @@ void ProgressBar::setProgressIsIndeterminate(bool i){
 
 		indeterminateFbo.end();
 		indeterminateFbo.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+		indeterminateFbo.getTexture().generateMipmap();
+		indeterminateFbo.getTexture().enableMipmap();
+		indeterminateFbo.getTexture().setTextureMinMagFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+		indeterminateFbo.getTexture().bind();
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0.5);
+		indeterminateFbo.getTexture().unbind();
 
 		ofPopStyle();
 	}
@@ -108,10 +114,10 @@ void ProgressBar::draw(float x, float y, float width, float height, float a){
 	}else{
 		ofSetColor(255);
 		indeterminateFbo.getTexture().bind();
-		float scale = 1.0;
+		float scale = INDETERMINATE_BAR_SIZE / height;
 
 		ofMesh m;
-		float indetOffset = - ofGetElapsedTimef();
+		float indetOffset = - 2 * ofGetElapsedTimef();
 		m.setMode(OF_PRIMITIVE_TRIANGLES);
 
 		m.addVertex(ofVec3f(x,y));

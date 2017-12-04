@@ -11,7 +11,7 @@
 
 #include "ofMain.h"
 
-#define INDETERMINATE_BAR_SIZE 64.0f
+#define INDETERMINATE_BAR_SIZE 256.0f
 
 class ProgressBar{
 
