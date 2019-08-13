@@ -75,6 +75,8 @@ void LoadingScreen::draw(ofRectangle bounds){
 
 	float avgSize = (bounds.width + bounds.height) * 0.5;
 
+	if (bounds.width < 0 || bounds.height < 0) return;
+
 	ofSetColor(bgColor);
 	ofDrawRectangle(bounds);
 	float padding = avgSize / 40;
@@ -85,33 +87,35 @@ void LoadingScreen::draw(ofRectangle bounds){
 	float usableDrawH = (bounds.height - 5 * padding); //above the progress bar + 1 extra padding
 	float numLines = usableDrawH / lineH; //more or less how many lines can fit in this space?
 
-	//as this could be lots of lines, lets remove the lines that would be offscreen so that we dont have to draw them
-	vector<string> splitLines = ofSplitString(statusString, "\n");
-	if (splitLines.size() > numLines){
-		splitLines.erase(splitLines.begin(), splitLines.begin() + splitLines.size() - 1 - numLines);
-	}
+	if (numLines > 0) {
+		//as this could be lots of lines, lets remove the lines that would be offscreen so that we dont have to draw them
+		vector<string> splitLines = ofSplitString(statusString, "\n");
+		if (splitLines.size() > numLines) {
+			splitLines.erase(splitLines.begin(), splitLines.begin() + splitLines.size() - 1 - numLines);
+		}
 
-	string shortMsg;
-	for(size_t i = 0; i < splitLines.size(); i++){
-		shortMsg += splitLines[i] + "\n";
-	}
+		string shortMsg;
+		for (size_t i = 0; i < splitLines.size(); i++) {
+			shortMsg += splitLines[i] + "\n";
+		}
 
-	ofVec2f msgBox;
-	ofRectangle bbox = font2.getStringBoundingBox(shortMsg, 0,0 );
-	msgBox.y = bbox.height;
-	msgBox.x = bbox.width;
+		ofVec2f msgBox;
+		ofRectangle bbox = font2.getStringBoundingBox(shortMsg, 0, 0);
+		msgBox.y = bbox.height;
+		msgBox.x = bbox.width;
 
-	//offset to implement a cheap auto-scroll when status message is longer than the area we have available
-	float offsetY = 0;
+		//offset to implement a cheap auto-scroll when status message is longer than the area we have available
+		float offsetY = 0;
 
-	if ( msgBox.y > usableDrawH ){
-		offsetY = msgBox.y - usableDrawH;
-	}
-	ofSetColor(statusColor);
-	ofPushMatrix();
+		if (msgBox.y > usableDrawH) {
+			offsetY = msgBox.y - usableDrawH;
+		}
+		ofSetColor(statusColor);
+		ofPushMatrix();
 		ofTranslate(padding + 1.0f, padding + 1.0f - offsetY);
 		font2.drawString(shortMsg, 0, 0);
-	ofPopMatrix();
+		ofPopMatrix();
+	}
 
 	//progress bar
 	float barH = avgSize / 40.;
