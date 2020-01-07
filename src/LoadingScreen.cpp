@@ -13,6 +13,11 @@ using namespace std;
 LoadingScreen::LoadingScreen(){
 }
 
+int LoadingScreen::calcFontSize(ofRectangle & r){
+	float avgSize = (r.width + r.height) * 0.5f;
+	float barH = avgSize / 40;
+	return barH * 0.6;
+}
 
 void LoadingScreen::setup(string fontName, string logoSvgPath, ofColor bgColor_, ofColor statusC){
 
@@ -28,9 +33,11 @@ void LoadingScreen::setup(string fontName, string logoSvgPath, ofColor bgColor_,
 	#endif
 	statusColor = statusC;
 	bgColor = bgColor_;
-	float fontSizeGuess = ofGetHeight() / 70.;
-	font2.load(fontName, fontSizeGuess, true, false, false);
-	font2.setLineHeight(fontSizeGuess * 1.33);
+	ofRectangle r = ofRectangle(0,0, ofGetWidth(), ofGetHeight());
+	fontSize = calcFontSize(r);
+	this->fontName = fontName;
+	font2.load(fontName, fontSize, true, false, false);
+	font2.setLineHeight(fontSize * 1.33f);
 }
 
 
@@ -39,7 +46,7 @@ void LoadingScreen::newScreen(string screenName,
 							  ofColor progressBarColor){
 
 	currentScreenName = screenName;
-	progress.setup(0, 1, 0.3);
+	progress.setup(0, 1, 0.3f);
 	progress.setBGColor(progressBarBgC);
 	progress.setFGColor(progressBarColor);
 }
@@ -72,6 +79,14 @@ void LoadingScreen::update(float currentValue, string status, float dt){
 
 
 void LoadingScreen::draw(ofRectangle bounds){
+
+	int newFontSize = calcFontSize(bounds);
+	if( newFontSize != fontSize){
+		fontSize = newFontSize;
+		font2 = ofTrueTypeFont();
+		font2.load(fontName, fontSize, true, false, false);
+		font2.setLineHeight(fontSize * 1.33f);
+	}
 
 	float avgSize = (bounds.width + bounds.height) * 0.5;
 

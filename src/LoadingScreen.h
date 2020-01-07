@@ -42,11 +42,13 @@ public:
 	ofRectangle getDrawableArea(){return drawArea;}
 	void draw(ofRectangle r);
 
-private:
+protected:
 
 	ProgressBar				progress;
 
 	ofTrueTypeFont			font2;
+	string 					fontName;
+	int 					fontSize = -1; //guessed semi-automatically given window size;
 	#ifdef LOGO_SUPPORT
 	ofxSVG					lpLogoSvg;
 	#endif
@@ -58,6 +60,8 @@ private:
 	ofColor bgColor;
 	ofColor statusColor;
 	ofRectangle drawArea;
+
+	int calcFontSize(ofRectangle & r);
 };
 
 #endif /* defined(__BaseApp__LoadingScreen__) */
