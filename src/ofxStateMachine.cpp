@@ -128,11 +128,34 @@ void ofxStateMachine<T>::setError(string msg, float retryAgainInSeconds, int max
 
 };
 
+template <class T>
+std::string ofxStateMachine<T>::secondsToHumanReadable(float secs, int decimalPrecision){
+	std::string ret;
+	if (secs < 60.0f ){ //if in seconds
+		ret = ofToString(secs, decimalPrecision) + " seconds";
+	}else{
+		if (secs < 3600.0f){ //if in min range
+			ret = ofToString(secs / 60.0f, decimalPrecision) + " minutes";
+		}else{ //hours or days
+			if (secs < 86400.0f){ // hours
+				ret = ofToString(secs / 3600.0f, decimalPrecision) + " hours";
+			}else{ //days
+				if (secs < 86400.0f * 7.0f){ // days
+					ret = ofToString(secs / (86400.0f), decimalPrecision) + " days";
+				}else{ //days
+					ret = ofToString(secs / (86400.0f * 7.0f) , decimalPrecision) + " weeks";
+				}
+			}
+		}
+	}
+	return ret;
+}
+
 
 template <class T>
 string ofxStateMachine<T>::getStatusMessage(){
 	string msg;// = "State: " + getNameForState(state);
-	msg += "Time in State: " + ofToString(stateTime, 1) + " seconds";
+	msg += "Time in State: " + secondsToHumanReadable(stateTime, 1);
 	if(error){
 		msg += "\nError: " + errorMsg;
 		msg += "\nRetrying in: " + ofToString(waitTime, 1) + " seconds";

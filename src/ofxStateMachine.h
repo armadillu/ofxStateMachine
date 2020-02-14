@@ -74,6 +74,8 @@ public:
 	ofEvent<StateChangedEventArgs> eventStateChanged;
 	ofEvent<ErrorStateEventArgs> eventStateError;
 
+	static std::string secondsToHumanReadable(float secs, int decimalPrecision);
+
 protected:
 
 	void update(ofEventArgs & args);
