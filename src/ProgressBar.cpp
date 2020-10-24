@@ -60,7 +60,9 @@ void ProgressBar::setProgressIsIndeterminate(bool i){
 		indeterminateFbo.getTexture().enableMipmap();
 		indeterminateFbo.getTexture().setTextureMinMagFilter(GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
 		indeterminateFbo.getTexture().bind();
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0.5);
+		//#ifndef TARGET_OPENGLES
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS_EXT, 0.5);
+		//#endif
 		indeterminateFbo.getTexture().unbind();
 
 		ofPopStyle();
